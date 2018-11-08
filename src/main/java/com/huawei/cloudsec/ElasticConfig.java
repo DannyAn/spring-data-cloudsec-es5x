@@ -30,9 +30,14 @@ public class ElasticConfig {
     //xpack鉴权配置插件，default= elastic:change
     private String xpackSecurityUser;
 
+    /**
+     * Bean的方法名不重要，关键是要声明一个客户端类型
+     * 验证了client作为方法名和transportClient作为方法名，都可以工作
+     * @return
+     * @throws UnknownHostException
+     */
     @Bean
-    //public TransportClient transportClient() throws UnknownHostException {
-    public Client client() throws UnknownHostException {
+    public Client transportClient() throws UnknownHostException {
         Settings.Builder builder = Settings.builder();
         builder.put("cluster.name", clusterName);
         if (!StringUtils.isEmpty(xpackSecurityUser)) {
