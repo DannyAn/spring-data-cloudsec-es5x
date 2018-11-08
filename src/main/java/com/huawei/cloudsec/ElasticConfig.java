@@ -7,6 +7,7 @@ import org.elasticsearch.xpack.client.PreBuiltXPackTransportClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
@@ -25,10 +26,10 @@ public class ElasticConfig {
     private String clusterNodes;
     //集群名称
     private String clusterName;
-
+    //xpack鉴权配置插件，default= elastic:change
     private String xpackSecurityUser;
 
-    //    @Bean
+    @Bean
     public TransportClient transportClient() throws UnknownHostException {
         Settings.Builder builder = Settings.builder();
         builder.put("cluster.name", clusterName);
@@ -37,7 +38,6 @@ public class ElasticConfig {
         }
         TransportClient client = new PreBuiltXPackTransportClient(builder.build());
 
-//        TransportClient client = new PreBuiltTransportClient(builder.build());
         String[] aryClusterNodes = clusterNodes.split(",");
         for (String nodes : aryClusterNodes) {
             String inetSocket[] = nodes.split(":");
