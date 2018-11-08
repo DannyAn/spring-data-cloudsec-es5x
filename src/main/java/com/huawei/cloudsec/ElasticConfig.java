@@ -51,6 +51,23 @@ public class ElasticConfig {
         }
         return client;
     }
+    /*
+    //To support elasticsearch 6.x use the following configuration
+    @Bean
+    public Client client() throws Exception {
+        Settings settings = Settings.builder().put("cluster.name", esClusterName).build();
+        TransportClient client = new PreBuiltTransportClient(settings);
+        client.addTransportAddress(new TransportAddress(InetAddress.getByName(esHost), esPort));
+
+        return client;
+    }
+
+    @Bean
+    public ElasticsearchTemplate elasticsearchTemplate() throws Exception {
+        return new ElasticsearchTemplate(client());
+    }
+    */
+
 
     public String getClusterNodes() {
         return clusterNodes;
