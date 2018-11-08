@@ -6,6 +6,8 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.xpack.client.PreBuiltXPackTransportClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
 import java.net.InetAddress;
@@ -14,8 +16,8 @@ import java.net.UnknownHostException;
 /**
  * 态势感知配置文件
  */
-//@Configuration
-//@ConfigurationProperties(prefix="elasticsearch")
+@Configuration
+@ConfigurationProperties(prefix = "elasticsearch")
 public class ElasticConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(ElasticConfig.class);
