@@ -1,9 +1,10 @@
 package com.huawei.cloudsec;
 
+import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.xpack.client.PreBuiltXPackTransportClient;
+import org.elasticsearch.common.transport.TransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -30,14 +31,15 @@ public class ElasticConfig {
     private String xpackSecurityUser;
 
     @Bean
-    public TransportClient transportClient() throws UnknownHostException {
+    //public TransportClient transportClient() throws UnknownHostException {
+    public Client client() throws UnknownHostException {
         Settings.Builder builder = Settings.builder();
         builder.put("cluster.name", clusterName);
         if (!StringUtils.isEmpty(xpackSecurityUser)) {
             builder.put("xpack.security.user", xpackSecurityUser);
         }
-        TransportClient client = new PreBuiltXPackTransportClient(builder.build());
-
+        //TransportClient client = new PreBuiltXPackTransportClient(builder.build());
+        TransportClient client = new PreBuiltTransportClient(builder.build());
         String[] aryClusterNodes = clusterNodes.split(",");
         for (String nodes : aryClusterNodes) {
             String inetSocket[] = nodes.split(":");
@@ -46,11 +48,12 @@ public class ElasticConfig {
             }
             String address = inetSocket[0];
             Integer port = Integer.valueOf(inetSocket[1]);
-            client.addTransportAddress(new
-                    InetSocketTransportAddress(InetAddress.getByName(address), port));
+//            client.addTransportAddress(new TransportAddress(InetAddress.getByName(address), port));
+            client.addTransportAddress(new TransportAddress(InetAddress.getByName(address), port));
         }
         return client;
     }
+
     /*
     //To support elasticsearch 6.x use the following configuration
     @Bean
